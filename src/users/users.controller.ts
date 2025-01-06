@@ -1,4 +1,14 @@
-import { Body, Controller, Delete, Get, Param, Post, Put, Query } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Delete,
+  Get,
+  Param,
+  ParseIntPipe,
+  Post,
+  Put,
+  Query,
+} from '@nestjs/common';
 import { UsersService } from './users.service';
 @Controller('users')
 export class UsersController {
@@ -22,8 +32,8 @@ export class UsersController {
   }
 
   @Get(':id')
-  getUserById(@Param('id') id: string) {
-    return this.usersService.getUserById(+id);
+  getUserById(@Param('id', ParseIntPipe) id: number) {
+    return this.usersService.getUserById(id);
   }
 
   @Post()
@@ -39,7 +49,7 @@ export class UsersController {
   }
   @Put(':id')
   updateOne(
-    @Param('id') id: string,
+    @Param('id', ParseIntPipe) id: number,
     @Body()
     updateUser: {
       name?: string;
@@ -47,11 +57,11 @@ export class UsersController {
       role?: 'ENGINEER' | 'DOCTOR' | 'INTERN';
     },
   ) {
-    return this.usersService.updateOne(+id, updateUser);
+    return this.usersService.updateOne(id, updateUser);
   }
 
   @Delete(':id')
-  deleteUser(@Param('id')id:string){
-    return this.usersService.deleteUser(+id)
+  deleteUser(@Param('id', ParseIntPipe) id: number) {
+    return this.usersService.deleteUser(id);
   }
 }
